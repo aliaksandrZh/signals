@@ -15,7 +15,7 @@ describe('computed', () => {
     const c = computed(() => s());
     expect(1).toBe(c());
   })
-  test('computation is not called when call the compute object',  () => {
+  test('computation is not called when computed result is called',  () => {
     const compute = vi.fn();
     compute.mockImplementation(() => s() + 5)
     const c = computed(compute);
@@ -31,7 +31,7 @@ describe('computed', () => {
   });
 
 
-  test('computation called when producers is updated',  () => {
+  test('computation called when producers are updated',  () => {
     const compute = vi.fn();
     compute.mockImplementation(() => s() + 5)
     const c = computed(compute);
