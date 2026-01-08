@@ -8,6 +8,13 @@ export const producerNotifyConsumers = (node) => {
   }
 };
 
+export const producerRemoveConsumer = (node) => {
+  for (const producer of node.producers) {
+    producer.consumers = producer.consumers.filter((c) => c != node);
+  }
+  node.producers = [];
+};
+
 export const producerAccessed = (node) => {
   if (!activeConsumer) return;
 

@@ -3,7 +3,6 @@ export const REACTIVE_NODE = {
   producers: [],
   producerValueChanged: undefined,
   value: null,
-  activeConsumer: null,
 };
 
 export const SIGNAL_REACTIVE_NODE = {
@@ -14,6 +13,12 @@ export const SIGNAL_REACTIVE_NODE = {
 export const COMPUTED_REACTIVE_NODE = {
   ...REACTIVE_NODE,
   kind: "computed",
+  computation: () => {},
+};
+
+export const EFFECT_REACTIVE_NODE = {
+  ...REACTIVE_NODE,
+  kind: "effect",
   computation: () => {},
 };
 
@@ -33,4 +38,7 @@ export const createSignalNode = () => {
 export const createComputedNode = () => {
   const node = createReactiveNode(COMPUTED_REACTIVE_NODE);
   return node;
+};
+export const createEffectNode = () => {
+  return createReactiveNode(EFFECT_REACTIVE_NODE);
 };

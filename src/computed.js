@@ -6,7 +6,6 @@ export const computed = (computation) => {
   node.computation = computation;
 
   setActiveConsumer(node);
-
   producerRecomputeValue(node);
 
   const computedFn = () => {
