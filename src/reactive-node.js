@@ -1,56 +1,36 @@
-let activeConsumer;
-
 export const REACTIVE_NODE = {
   consumers: [],
   producers: [],
   producerValueChanged: undefined,
   value: null,
   activeConsumer: null,
-  producerNotifyConsumers: (node) => {
-    if (!node.consumers) return;
-    for (const consumer of node.consumers) {
-      consumer.producerRecomputeValue(consumer);
-      consumer.producerNotifyConsumers(consumer);
-    }
-  },
-  producerAccessed: (node) => {
-    if (!activeConsumer) return;
+};
 
-    activeConsumer.producers.push(node);
-    node.consumers.push(activeConsumer);
-  },
-  setActiveConsumer: (consumer) => {
-    activeConsumer = consumer;
-  }
+export const SIGNAL_REACTIVE_NODE = {
+  ...REACTIVE_NODE,
+  kind: "signal",
 };
 
 export const COMPUTED_REACTIVE_NODE = {
   ...REACTIVE_NODE,
-  kind: 'computed',
+  kind: "computed",
   computation: () => {},
-  producerRecomputeValue: (node) => {
-    node.value = node.computation();
-  }
-}
+};
 
 let NODE_ID = 1;
 
-const createReactiveNode = (kind) => {
-  const node = Object.create(REACTIVE_NODE);
-  node.kind = kind;
-  node.NODE_ID = NODE_ID++;
-  node.consumers = [];
-  node.producers = [];
-  return node;
-}
+const createReactiveNode = (node) => {
+  const _node = Object.create(node);
+  _node.NODE_ID = NODE_ID++;
+  _node.consumers = [];
+  _node.producers = [];
+  return _node;
+};
 
 export const createSignalNode = () => {
-  return createReactiveNode('signal');
-}
+  return createReactiveNode(SIGNAL_REACTIVE_NODE);
+};
 export const createComputedNode = () => {
-  const node =  Object.create(COMPUTED_REACTIVE_NODE);
-  node.NODE_ID = NODE_ID++;
-  node.consumers = [];
-  node.producers = [];
+  const node = createReactiveNode(COMPUTED_REACTIVE_NODE);
   return node;
-}
+};
