@@ -17,7 +17,7 @@ describe("effect", () => {
     expect(e).toBeTypeOf("function");
   });
 
-  test("computation called when producers are updated", () => {
+  test("computation called when producers are updated (with set)", () => {
     const computation = vi.fn();
     computation.mockImplementation(() => s() + 5);
     const e = effect(computation);
@@ -29,6 +29,21 @@ describe("effect", () => {
     s.set(0);
     s.set(1);
     s.set(2);
+    expect(computation).toHaveBeenCalledTimes(4);
+  });
+
+  test("computation called when producers are updated (with update)", () => {
+    const computation = vi.fn();
+    computation.mockImplementation(() => s() + 5);
+    const e = effect(computation);
+
+    s.update(() => 5);
+    expect(computation).toHaveBeenCalledTimes(2);
+    computation.mockClear();
+    s.update(() => 5);
+    s.update(() => 0);
+    s.update(() => 1);
+    s.update(() => 2);
     expect(computation).toHaveBeenCalledTimes(4);
   });
 

@@ -12,6 +12,9 @@ export const signal = (initialValue) => {
     node.value = newValue;
     producerNotifyConsumers(node);
   };
-  signalFn.update = (updater) => (node.value = updater(node.value));
+  signalFn.update = (updater) => {
+    node.value = updater(node.value);
+    producerNotifyConsumers(node);
+  };
   return signalFn;
 };

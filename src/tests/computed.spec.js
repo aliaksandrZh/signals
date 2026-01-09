@@ -30,7 +30,7 @@ describe("computed", () => {
     expect(compute).toHaveBeenCalledTimes(1);
   });
 
-  test("computation called when producers are updated", () => {
+  test("computation called when producers are updated (with set)", () => {
     const compute = vi.fn();
     compute.mockImplementation(() => s() + 5);
     const c = computed(compute);
@@ -43,6 +43,22 @@ describe("computed", () => {
     s.set(0);
     s.set(1);
     s.set(2);
+    expect(compute).toHaveBeenCalledTimes(4);
+  });
+
+  test("computation called when producers are updated (with update)", () => {
+    const compute = vi.fn();
+    compute.mockImplementation(() => s() + 5);
+    const c = computed(compute);
+
+    s.update(() => 5);
+    expect(10).toBe(c());
+    expect(compute).toHaveBeenCalledTimes(2);
+    compute.mockClear();
+    s.update(() => 5);
+    s.update(() => 0);
+    s.update(() => 1);
+    s.update(() => 2);
     expect(compute).toHaveBeenCalledTimes(4);
   });
 
