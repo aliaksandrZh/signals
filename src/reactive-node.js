@@ -1,6 +1,6 @@
 export const REACTIVE_NODE = {
-  consumers: [],
-  producers: [],
+  consumers: new Set(),
+  producers: new Set(),
   producerValueChanged: undefined,
   value: null,
 };
@@ -27,8 +27,8 @@ let NODE_ID = 1;
 const createReactiveNode = (node) => {
   const _node = Object.create(node);
   _node.NODE_ID = NODE_ID++;
-  _node.consumers = [];
-  _node.producers = [];
+  _node.consumers = new Set();
+  _node.producers = new Set();
   return _node;
 };
 

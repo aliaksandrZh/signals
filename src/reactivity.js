@@ -10,16 +10,16 @@ export const producerNotifyConsumers = (node) => {
 
 export const producerRemoveConsumer = (node) => {
   for (const producer of node.producers) {
-    producer.consumers = producer.consumers.filter((c) => c != node);
+    producer.consumers.delete(node);
   }
-  node.producers = [];
+  node.producers.clear();
 };
 
 export const producerAccessed = (node) => {
   if (!activeConsumer) return;
 
-  activeConsumer.producers.push(node);
-  node.consumers.push(activeConsumer);
+  activeConsumer.producers.add(node);
+  node.consumers.add(activeConsumer);
 };
 
 export const producerRecomputeValue = (node) => {
